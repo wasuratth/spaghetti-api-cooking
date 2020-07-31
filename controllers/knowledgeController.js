@@ -6,6 +6,7 @@ module.exports.index = async (req, res, next) => {
         const knowledges = await Knowledge.find();
         res.status(200).json({
             success: true,
+            msg : "" , 
             data: knowledges
         });
     } catch (err) {
@@ -18,5 +19,9 @@ module.exports.getKnowledgeById = async  (req, res, next) => {
     console.log(id) ; 
     const knowledge = await Knowledge.findById(id);
     await Knowledge.updateOne({ _id : id },  { viewcount : ++ knowledge.viewcount  } );
-     res.status(200).json(knowledge);
+     res.status(200).json({
+        success: true,
+        msg: "",
+        data: knowledge
+    });
 }
