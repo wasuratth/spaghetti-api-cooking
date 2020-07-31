@@ -25,6 +25,10 @@ const postRoute = require('./routes/postRoute');
 const commentRoute = require('./routes/commentRoute');
 const profileRoute = require('./routes/profileRoute');
 
+const groupRoute = require('./routes/groupRoute');
+const groupMapRoute = require('./routes/groupMapRoute');
+
+
 require('./models/commentModel');
 
 const app = express();
@@ -55,7 +59,8 @@ app.use('/api/auth', authRoute);
 //app.use('/api/post', postRoute);
 //app.use('/api/comment', commentRoute );
 //app.use('/api/profile', profileRoute );
-
+app.use('/api/group', groupRoute);
+app.use('/api/groupmap', groupMapRoute);
 
 app.use(errorHandler);
 
