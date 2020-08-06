@@ -28,6 +28,7 @@ const knowledgeRoute = require('./routes/knowledgeRoute');
 const groupRoute = require('./routes/groupRoute');
 const groupMapRoute = require('./routes/groupMapRoute');
 const commentRoute = require('./routes/commentRoute');
+const menuRoute = require('./routes/menuRoute');
 
 
 require('./models/commentModel');
@@ -65,6 +66,7 @@ app.use('/api/knowledge', knowledgeRoute);
 app.use('/api/group', groupRoute);
 app.use('/api/groupmap', groupMapRoute);
 app.use('/api/comment', commentRoute);
+app.use('/api/menu', menuRoute);
 
 app.use(errorHandler);
 
