@@ -1,9 +1,12 @@
 const express = require('express')
 const router = express.Router()
 const groupMapController   = require('../controllers/groupMapController')
+const authentication = require('../middleware/authenticationHandler');
 
 //GET localhost:3000/api/post
 router.get('/', groupMapController.index)
+router.post('/' , groupMapController.createPost) ; 
+router.delete('/', groupMapController.deletePost)
 
 /* //GET localhost:3000/api/post/xxxxxxxxxxx
 router.get('/:id', categoryController.getCateById)

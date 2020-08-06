@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 //const User = require('./userModel');
 
 const schema = new Schema({
-  c_id: { type: String, required: true, trim: true },
-  c_name: { type: String, trim: true }
+  m_id: { type: String, required: true, trim: true },
+  c_id: { type: String, trim: true }
   
 }, {
   toJSON: {virtuals: true},

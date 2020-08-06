@@ -22,12 +22,12 @@ const connectDB = require('./config/db')
 const authRoute = require('./routes/authRoute');
 const feedRoute = require('./routes/feedRoute');
 const postRoute = require('./routes/postRoute');
-const commentRoute = require('./routes/commentRoute');
 const profileRoute = require('./routes/profileRoute');
 const knowledgeRoute = require('./routes/knowledgeRoute');
 
 const groupRoute = require('./routes/groupRoute');
 const groupMapRoute = require('./routes/groupMapRoute');
+const commentRoute = require('./routes/commentRoute');
 
 
 require('./models/commentModel');
@@ -64,6 +64,7 @@ app.use('/api/knowledge', knowledgeRoute);
 //app.use('/api/profile', profileRoute );
 app.use('/api/group', groupRoute);
 app.use('/api/groupmap', groupMapRoute);
+app.use('/api/comment', commentRoute);
 
 app.use(errorHandler);
 

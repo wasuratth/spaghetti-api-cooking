@@ -6,7 +6,7 @@ module.exports.index = async function (req, res, next) {
    
     try {
         
-        const posts = await groupM.find();
+        const posts = await groupMap.find();
         res.status(200).json({
             data: posts
         });
@@ -28,12 +28,10 @@ module.exports.getCateById = async (req, res, next) => {
 
 module.exports.createCate = async (req, res) => {
     console.log(req.body);
-    const { c_id ,c_name} = req.body;
-    console.log(`c_id : ${c_id}`);
-    console.log(`c_name : ${c_name}`);
+    const { m_id ,c_id} = req.body;
     let categ = new groupMap({
-        c_id: c_id,
-        c_name : c_name
+        m_id: m_id,
+        c_id : c_id
     });
 
     try {
@@ -45,6 +43,53 @@ module.exports.createCate = async (req, res) => {
         });
     }
 }
+
+
+module.exports.createPost = async (req, res) => {
+    //const { _id : c_id,m_id : m_id } = req.user ; 
+    const { c_id : c_id,m_id : m_id } = req.body ;
+     let post = new groupMap({
+        c_id : c_id ,
+        m_id : m_id,
+    
+    });
+
+    try {
+        await post.save();
+        res.status(201).json({ data: post , success: true , msg : '' });
+    } catch (err) {
+        res.status(500).json({  errors: { err } });
+    }
+}
+
+
+module.exports.deletePost = async (req, res) => {
+    try {
+        //const { m_id } = req.params;
+        const { c_id : c_id,m_id : m_id } = req.body ;
+        const post = await Post.findByIdAndDelete(m_id);
+        if (!post) {
+            res.status(404).json({
+                success: false, errors: {
+                    message: "Cannot delete"
+                }
+            });
+        }
+
+        res.status(200).json({
+            message: 'Deleted have been completed',
+            success: true,
+        });
+    } catch (err) {
+        res.status(500).json({
+            errors: {
+                success: false ,
+                message: "Cannot delete"
+            }
+        })
+    }
+}
+ 
 /* 
 module.exports.updateCate = async (req, res, next) => {
     try {
