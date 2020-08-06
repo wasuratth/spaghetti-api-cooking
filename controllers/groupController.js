@@ -45,6 +45,24 @@ module.exports.createCate = async (req, res) => {
         });
     }
 }
+
+module.exports.createPost = async (req, res) => {
+    //const { _id : c_id,m_id : m_id } = req.user ; 
+    const { c_id: c_id,
+        c_name : c_name} = req.body ;
+     let group = new groupM({
+        c_id: c_id,
+        c_name : c_name
+    
+    });
+
+    try {
+        await group.save();
+        res.status(201).json({ data: group , success: true , msg : '' });
+    } catch (err) {
+        res.status(500).json({  errors: { err } });
+    }
+}
 /* 
 module.exports.updateCate = async (req, res, next) => {
     try {

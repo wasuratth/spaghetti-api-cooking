@@ -4,6 +4,7 @@ const groupController   = require('../controllers/groupController')
 
 //GET localhost:3000/api/post
 router.get('/', groupController.index)
+router.post('/' , groupController.createPost) ; 
 
 /* //GET localhost:3000/api/post/xxxxxxxxxxx
 router.get('/:id', categoryController.getCateById)
