@@ -3,14 +3,14 @@ const Comment = require('../models/commentModel');
 
 module.exports.index = async function (req, res, next) {
     // select * from post; 
-   
+
     try {
-        
+
         const posts = await Comment.find();
         res.status(200).json({
             data: posts
         });
-       
+
     } catch (err) {
         res.status(500).json(
             {
@@ -27,20 +27,23 @@ module.exports.getCateById = async (req, res, next) => {
 
 
 module.exports.createComment = async (req, res) => {
-    console.log(req.body);
-    const { cm_id ,m_id,u_id,cm_detail,cm_point,cm_date} = req.body;
-    let categ = new Comment({
-        cm_id: cm_id,
-        m_id : m_id,
-        u_id : u_id,
-        cm_detail : cm_detail,
-        cm_point : cm_point,
-        cm_date : cm_date
+
+    const { _id: user_id } = req.user;
+    const { menu_id, cm_detail = "", cm_point = 0 } = req.body;
+    
+    console.log("user_id = " , user_id ) ; 
+    console.log("menu_id = " , menu_id ) ; 
+
+    let comment = new Comment({
+        user: user_id ,
+        menu : menu_id ,
+        cm_detail: cm_detail,
+        cm_point: cm_point
     });
 
     try {
-        await categ.save();
-        res.status(201).json({ data: { categ } }); 
+        await comment.save();
+        res.status(201).json({ success: true , message: "", data: comment });
     } catch (err) {
         res.status(500).json({
             errors: { err }
@@ -48,22 +51,33 @@ module.exports.createComment = async (req, res) => {
     }
 }
 
+module.exports.getCommentByMenuId = async (req, res, next) => {
+    const { menu_id } = req.params;
+    const comments = await Comment.find({ menu : menu_id }).populate("user").sort({createdAt : 'desc' }).exec();
+    res.status(200).json({ success: true , message: "",  data: comments  });
+}
+
+
+
+
 
 module.exports.updatePost = async (req, res) => {
     try {
         const { cm_id } = req.params;
-        const { m_id,u_id,cm_detail,cm_point,cm_date} = req.body;
+        const { m_id, u_id, cm_detail, cm_point, cm_date } = req.body;
 
-        const comment = await Comment.updateOne({ _cm_id : cm_id },
-            { cm_id: cm_id,
-                m_id : m_id,
-                u_id : u_id,
-                cm_detail : cm_detail,
-                cm_point : cm_point,
-                cm_date : cm_date }
+        const comment = await Comment.updateOne({ _cm_id: cm_id },
+            {
+                cm_id: cm_id,
+                m_id: m_id,
+                u_id: u_id,
+                cm_detail: cm_detail,
+                cm_point: cm_point,
+                cm_date: cm_date
+            }
         );
 
- 
+
         if (comment.nModified === 0) {
             throw new Error('Cannot update');
         } else {
@@ -87,26 +101,26 @@ module.exports.updatePost = async (req, res) => {
 module.exports.createPost = async (req, res) => {
     //const { _id : c_id,m_id : m_id } = req.user ; 
     const { cm_id: cm_id,
-        m_id : m_id,
-        u_id : u_id,
-        cm_detail : cm_detail,
-        cm_point : cm_point,
-        cm_date : cm_date } = req.body ;
-     let comment = new Comment({
+        m_id: m_id,
+        u_id: u_id,
+        cm_detail: cm_detail,
+        cm_point: cm_point,
+        cm_date: cm_date } = req.body;
+    let comment = new Comment({
         cm_id: cm_id,
-                m_id : m_id,
-                u_id : u_id,
-                cm_detail : cm_detail,
-                cm_point : cm_point,
-                cm_date : cm_date
-    
+        m_id: m_id,
+        u_id: u_id,
+        cm_detail: cm_detail,
+        cm_point: cm_point,
+        cm_date: cm_date
+
     });
 
     try {
         await comment.save();
-        res.status(201).json({ data: comment , success: true , msg : '' });
+        res.status(201).json({ data: comment, success: true, msg: '' });
     } catch (err) {
-        res.status(500).json({  errors: { err } });
+        res.status(500).json({ errors: { err } });
     }
 }
 
@@ -132,94 +146,9 @@ module.exports.deletePost = async (req, res) => {
     } catch (err) {
         res.status(500).json({
             errors: {
-                success: false ,
+                success: false,
                 message: "Cannot delete"
             }
         })
     }
 }
-/* 
-module.exports.updateCate = async (req, res, next) => {
-    try {
-        const { c_id } = req.params;
-        const { c_name } = req.body;
-        console.log(req.body);
-        console.log(`c_id : ${c_id}`);
-        console.log(`c_name : ${c_name}`);
-        const post = await category.updateOne({ c_id: c_id },
-            { c_name: c_name}
-        );
-
-       // console.log(post);
-
-        if (post.nModified === 0) {
-            throw new Error('Cannot update');
-        } else {
-            res.status(201).json(
-                {
-                    message: "Update completed",
-                    success: true
-                });
-        }
-    } catch (err) {
-        res.status(500).json({
-            error: [{
-                code: 500,
-                message: err.message
-            }]
-        });
-    }
-}
-
-module.exports.updateCateSome = async (req, res, next) => {
-
-    try {
-        console.log(req.body);
-        const { c_id } = req.params;
-        const { c_name } = req.body;
-
-        console.log(`c_id : ${c_id}`);
-        const post = await category.findByIdAndUpdate(c_id, {
-            c_name: c_name
-        });
-
-        console.log(`post : ${post}`);
-
-        if (!post) {
-            throw new Error('Notthing to update');
-        } else {
-            res.status(201).json({ data: { post } });
-        }
-
-    } catch (err) {
-        res.status(500).json({
-            errors: {
-                code: 500,
-                message: err.message
-            }
-        });
-    }
-}
-
-module.exports.deleteCate = async (req, res, next) => {
-    try {
-        const {c_id} = req.params;
-        const post = await category.findByIdAndDelete(c_id);
-
-        if (!post) {
-            res.status(404).json({ errors: { message : "ไม่สามารถลบได้" } });
-        }
-
-        res.status(200).json({
-            success : true,
-        });
-    } catch (err) {
-        res.status(500).json({
-            errors: {
-                code: 500,
-                message: "Cannot delete"
-            }
-        })
-    } 
-}*/
-
