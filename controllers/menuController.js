@@ -15,12 +15,13 @@ module.exports.index = async (req, res, next) => {
 }
 
 module.exports.getMenuById = async  (req, res, next) => {
+
     const {id} = req.params ; 
     const menu = await Menu.findById(id);
     await Menu.updateOne({ _id : id },  { viewcount : ++ menu.viewcount  } );
     res.status(200).json({
         success: true,
-        msg: "",
+        message : "",
         data: menu
     });
 }

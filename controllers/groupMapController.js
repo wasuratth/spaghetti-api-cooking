@@ -91,7 +91,12 @@ module.exports.deletePost = async (req, res) => {
 }
 
 module.exports.getMenuByMapRef = async (req, res, next) => {
+
     const { c_id } = req.params;
+    const groupmap = await groupMap.findOne({ c_id: c_id }); 
+
+
+
     const groupmaps = await groupMap.find({ c_id: c_id }).populate('m_id').exec(); 
     res.status(200).json({ success: true, msg: '', data: groupmaps });
 }

@@ -8,7 +8,7 @@ const menuSchema = new mongoose.Schema({
   step : { type: Array }, 
   ingredients : {type: Array },   
   viewcount: { type: Number, default: 0 } ,
-  star : { type: Number, default: 0 } ,
+  star : { type: Number, default: 0 } , 
   user : { type : mongoose.Types.ObjectId , ref : 'User' }
 }, {
   toJSON: { virtuals: true },
