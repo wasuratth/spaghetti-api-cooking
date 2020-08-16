@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const Comment = require('../models/commentModel');
+const Menu = require('../models/menuModel');
+
+
 
 module.exports.index = async function (req, res, next) {
     // select * from post; 
@@ -30,20 +33,31 @@ module.exports.createComment = async (req, res) => {
 
     const { _id: user_id } = req.user;
     const { menu_id, cm_detail = "", cm_point = 0 } = req.body;
-    
-    console.log("user_id = " , user_id ) ; 
-    console.log("menu_id = " , menu_id ) ; 
+
+    console.log("user_id = ", user_id);
+    console.log("menu_id = ", menu_id);
+
+
+
 
     let comment = new Comment({
-        user: user_id ,
-        menu : menu_id ,
+        user: user_id,
+        menu: menu_id,
         cm_detail: cm_detail,
         cm_point: cm_point
     });
 
+
+
     try {
         await comment.save();
-        res.status(201).json({ success: true , message: "", data: comment });
+
+        const avgLisg = await Comment.aggregate([{ $match: { menu : mongoose.Types.ObjectId(menu_id) } }, { $group: { _id: "$menu", pop: { $avg: "$cm_point" } } }]).exec();
+        const [avg] = avgLisg ; 
+         
+        await Menu.findByIdAndUpdate( user_id , { star : avg.pop }).exec() ; 
+
+        res.status(201).json({ success: true, message: "", data: comment });
     } catch (err) {
         res.status(500).json({
             errors: { err }
@@ -53,8 +67,8 @@ module.exports.createComment = async (req, res) => {
 
 module.exports.getCommentByMenuId = async (req, res, next) => {
     const { menu_id } = req.params;
-    const comments = await Comment.find({ menu : menu_id }).populate("user").sort({createdAt : 'desc' }).exec();
-    res.status(200).json({ success: true , message: "",  data: comments  });
+    const comments = await Comment.find({ menu: menu_id }).populate("user").sort({ createdAt: 'desc' }).exec();
+    res.status(200).json({ success: true, message: "", data: comments });
 }
 
 

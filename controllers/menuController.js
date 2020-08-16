@@ -30,6 +30,7 @@ module.exports.getMenuById = async  (req, res, next) => {
 module.exports.saveMenu = async  (req, res, next) => {
     const { _id : user_id } = req.user ;  
     const { id , title , detail , picture , step , ingredients , group } = req.body ;
+    console.log(req.body) ;
     try {
 
         if(!id){
