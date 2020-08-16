@@ -26,6 +26,28 @@ module.exports.getMenuById = async  (req, res, next) => {
     });
 }
 
+module.exports.getMenuByName = async  (req, res, next) => {
+    const {name} = req.params ; 
+    const menus = await Menu.find({ "title" :  { "$regex": name , "$options": "i" }} );
+     res.status(200).json({
+        success: true,
+        message : "",
+        data: menus
+    });
+}
+
+module.exports.getMenuByUser = async  (req, res, next) => {
+    const { _id : user_id } = req.user ;   
+    const menus = await Menu.find({ "user" :  user_id });
+     res.status(200).json({
+        success: true,
+        message : "",
+        data: menus
+    });
+}
+
+
+
 
 module.exports.saveMenu = async  (req, res, next) => {
     const { _id : user_id } = req.user ;  
