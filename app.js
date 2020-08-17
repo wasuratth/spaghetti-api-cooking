@@ -68,6 +68,7 @@ app.use('/api/picture', pictureRoute);
 app.use(errorHandler);
 
 
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.listen(config.PORT, console.log(`Server running in ${process.env.NODE_ENV} mode on port ${config.PORT}`));

@@ -7,6 +7,7 @@ const authentication = require('../middleware/authenticationHandler');
 router.get('/', menuController.index)
 router.get('/:id', menuController.getMenuById)
 router.post('/' , authentication.isLoggedIn , menuController.saveMenu) ; 
+router.get('/search/:search', menuController.getMenuByName)
 
  
 

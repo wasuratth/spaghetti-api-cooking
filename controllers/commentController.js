@@ -34,11 +34,7 @@ module.exports.createComment = async (req, res) => {
     const { _id: user_id } = req.user;
     const { menu_id, cm_detail = "", cm_point = 0 } = req.body;
 
-    console.log("user_id = ", user_id);
-    console.log("menu_id = ", menu_id);
-
-
-
+    await Comment.deleteMany({ user: user_id, menu: menu_id });
 
     let comment = new Comment({
         user: user_id,
@@ -50,12 +46,14 @@ module.exports.createComment = async (req, res) => {
 
 
     try {
+
         await comment.save();
 
-        const avgLisg = await Comment.aggregate([{ $match: { menu : mongoose.Types.ObjectId(menu_id) } }, { $group: { _id: "$menu", pop: { $avg: "$cm_point" } } }]).exec();
-        const [avg] = avgLisg ; 
-         
-        await Menu.findByIdAndUpdate( user_id , { star : avg.pop }).exec() ; 
+        const avgLisg = await Comment.aggregate([{ $match: { menu: mongoose.Types.ObjectId(menu_id) } }, { $group: { _id: "$menu", pop: { $avg: "$cm_point" } } }]).exec();
+        const [avg] = avgLisg;
+        console.log('AVG = ', avg);
+        
+        await Menu.findByIdAndUpdate(menu_id, { star: avg.pop }).exec();
 
         res.status(201).json({ success: true, message: "", data: comment });
     } catch (err) {

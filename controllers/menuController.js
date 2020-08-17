@@ -27,8 +27,8 @@ module.exports.getMenuById = async  (req, res, next) => {
 }
 
 module.exports.getMenuByName = async  (req, res, next) => {
-    const {name} = req.params ; 
-    const menus = await Menu.find({ "title" :  { "$regex": name , "$options": "i" }} );
+    const {search} = req.params ; 
+    const menus = await Menu.find({ "title" :  { "$regex": search , "$options": "i" }} );
      res.status(200).json({
         success: true,
         message : "",

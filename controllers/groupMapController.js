@@ -93,10 +93,20 @@ module.exports.deletePost = async (req, res) => {
 module.exports.getMenuByMapRef = async (req, res, next) => {
 
     const { c_id } = req.params;
-    const groupmap = await groupMap.findOne({ c_id: c_id }); 
+    // const group = await groupMap.findOne({ c_id: c_id }); 
+    let groups = new Map() ; 
+    groups.set('c1' , 'เมนูง่ายๆ') ; 
+    groups.set('c2' , 'เมนูเส้น') ; 
+    groups.set('c3' , 'เมนูเนื้อสัตว์') ; 
+    groups.set('c4' , 'เมนูจานเดียว') ; 
+    groups.set('c5' , 'เมนูเพื่อสุขภาพ') ; 
+    groups.set('c6' , 'เมนูสลัด') ; 
+    groups.set('c7' , 'เมนูผลไม้') ; 
+    groups.set('c8' , 'เมนูของหวาน') ; 
+    groups.set('c9' , 'เมนูเครื่องดื่ม') ; 
 
-
+ 
 
     const groupmaps = await groupMap.find({ c_id: c_id }).populate('m_id').exec(); 
-    res.status(200).json({ success: true, msg: '', data: groupmaps });
+    res.status(200).json({ success: true, msg: "" , data: groupmaps , title  : groups.get(c_id) });
 }
