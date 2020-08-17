@@ -2,8 +2,8 @@ const express = require('express')
 const router = express.Router()
 const fileController   = require('../controllers/fileController')
 const authentication = require('../middleware/authenticationHandler');
-var multer  = require('multer')
-var upload = multer()
+const multer  = require('multer')
+const upload = multer()
 
 
 router.get('/:id' , [  ] , fileController.getPictureById ) ; 
