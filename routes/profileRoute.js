@@ -7,7 +7,8 @@ const multer  = require('multer')
 const upload = multer()
 
 router.get('/me' , authentication.isLoggedIn , profileController.getMyProfile) ;  
-router.post('/password' , authentication.isLoggedIn , profileController.changeMyPassword) ;  
+router.post('/password' , authentication.isLoggedIn , profileController.changeMyPassword) ; 
+router.get('/picture/:id/:time' , profileController.getProfilePicture) ;
 router.post('/picture' , [  authentication.isLoggedIn , upload.single('picture')] , profileController.uploadProfilePicture) ; 
 
   

@@ -54,3 +54,19 @@ module.exports.uploadProfilePicture = async (req, res, next) => {
 
 
 }
+
+
+module.exports.getProfilePicture = async (req, res, next) => {
+
+    var { id } = req.params  ;
+
+    const user = await User.findById(id) ; 
+    const pic = await Picture.findById(user.picture) ; 
+    if(pic){
+        res.status(200) ; 
+        res.contentType('image/jpeg');
+        res.send(pic.image) ; 
+    }
+   
+
+}
