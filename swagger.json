@@ -60,7 +60,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/group"
+                "$ref": "#/definitions/Group"
               }
             }
           },
@@ -141,7 +141,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/groupmap"
+                "$ref": "#/definitions/Groupmap"
               }
             }
           },
