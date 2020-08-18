@@ -4,21 +4,9 @@ const groupMapController   = require('../controllers/groupMapController')
 const authentication = require('../middleware/authenticationHandler');
 
 //GET localhost:3000/api/post
-router.get('/', groupMapController.index)
+router.get('/', groupMapController.index) ; 
+router.get('/type/:c_id', authentication.isLoggedIn , groupMapController.getMenuByMapRef ) ; 
 router.post('/' , groupMapController.createPost) ; 
-router.delete('/', groupMapController.deletePost)
-
-/* //GET localhost:3000/api/post/xxxxxxxxxxx
-router.get('/:id', categoryController.getCateById)
-//router.get('/tag/:id', categoryController.getTags)
-//router.get('/comment/:id', categoryController.getComments)
-//POST localhost:3000/api/post  {BODY}
-router.post('/', categoryController.createCate)
-//PUT localhost:3000/api/post/xxxxxxxxxxxx {BODY}
-router.put('/:id', categoryController.updateCate)
-//PATCH localhost:3000/api/post/xxxxxxxxxxxx {BODY}
-router.patch('/:id', categoryController.updateCateSome)
-// DELETED localhost:3000/api/post/xxxxxxxxxxxx
-router.delete('/:id', categoryController.deleteCate) */
+router.delete('/', groupMapController.deletePost) ; 
 
 module.exports = router

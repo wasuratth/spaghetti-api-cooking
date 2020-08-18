@@ -1,11 +1,17 @@
 const express = require('express')
 const router = express.Router()
 const commentController   = require('../controllers/commentController')
+const authentication = require('../middleware/authenticationHandler');
+
+
 
 //GET localhost:3000/api/post
-router.get('/', commentController.index)
-router.post('/' , commentController.createPost) ; 
-router.delete('/:id', commentController.deletePost)
+
+router.get('/', authentication.isLoggedIn , commentController.index)
+router.post('/', authentication.isLoggedIn  , commentController.createComment) ; 
+router.delete('/:id', authentication.isLoggedIn , commentController.deletePost)
+
+router.get('/menu/:menu_id', authentication.isLoggedIn , commentController.getCommentByMenuId) ; 
 
 /* //GET localhost:3000/api/post/xxxxxxxxxxx
 router.get('/:id', categoryController.getCateById)
