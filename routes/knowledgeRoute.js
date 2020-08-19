@@ -5,8 +5,8 @@ const authentication = require('../middleware/authenticationHandler');
 const knowledgeController = require('../controllers/knowledgeController');
 
 
-router.get('/' , authentication.isLoggedIn , knowledgeController.index ) ;  
-router.get('/:id' , authentication.isLoggedIn , knowledgeController.getKnowledgeById ) ;  
+router.get('/' , knowledgeController.index ) ;  
+router.get('/:id' , knowledgeController.getKnowledgeById ) ;  
 
  
  
