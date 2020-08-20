@@ -75,8 +75,9 @@ module.exports.updatePost = async (req, res) => {
 
 module.exports.deletePost = async function (req, res) {
     try {
-        const { id } = req.params;
-        const post = await Post.findByIdAndDelete(id);
+        const { id,mid } = req.params;
+
+        const post = await Post.findByIdAndDelete(id,mid);
         if (!post) {
             res.status(404).json({
                 success: fasle, errors: {
@@ -93,8 +94,8 @@ module.exports.deletePost = async function (req, res) {
         res.status(500).json({
             errors: {
                 success: fasle,
-                message: "Cannot delete"
-            }
-        })
+                message: "Cannot delete",
+            
+        }})
     }
 }

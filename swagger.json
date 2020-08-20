@@ -1,165 +1,1120 @@
 {
   "swagger": "2.0",
   "info": {
+    "description": "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters.",
     "version": "1.0.0",
-    "title": "Yet Another Node.js Blogg Application API",
-    "description": "Yet Another Node.js Blogg Application API",
+    "title": "Swagger Spaghetti",
+  
+    "contact": {
+      "email": "Spaghetti@baac.or.th"
+    },
     "license": {
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
+      "name": "Spaghetti Team"
     }
   },
-  "host": "localhost:3004",
-  "basePath": "/api/v1",
+  "host": "localhost:3100",
+  "basePath": "/API",
   "tags": [
-    {
-      "name": "Users",
-      "description": "API for users in the system"
-    }
+   
   ],
   "schemes": [
     "http"
   ],
-  "consumes": [
-    "application/json"
-  ],
-  "produces": [
-    "application/json"
-  ],
   "paths": {
-    "/users": {
-      "post": {
+
+    "/profile/me": {
+      "get": {
         "tags": [
-          "Users"
+          "Profile"
         ],
-        "description": "Create new user in system",
-        "parameters": [
-          {
-            "name": "user",
-            "in": "body",
-            "description": "User that we want to create",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        ],
+        "summary": "Finds Profile",
+        "description": "Multiple  values can be provided with comma separated strings",
+        "operationId": "Profile",
         "produces": [
+          "application/xml",
           "application/json"
         ],
         "responses": {
           "200": {
-            "description": "New user is created",
+            "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/User"
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Group"
+              }
             }
+          },
+          "400": {
+            "description": "Invalid status value"
           }
-        }
-      },
+        },
+        "security": [
+          {
+            "petstore_auth": [
+              "write:pets",
+              "read:pets"
+            ]
+          }
+        ]
+      }
+    },
+
+    "/profile/picture/{ID}/{picTime}": {
       "get": {
         "tags": [
-          "Users"
+          "Profile"
         ],
-        "summary": "Get all users in system",
+        "summary": "Find picture by ID",
+        "description": "Returns pic",
+        "operationId": "getpictureById",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "description": "ID of pet to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "Time",
+            "in": "path",
+            "description": "Time to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK",
+            "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/Users"
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid ID"
+          },
+          "404": {
+            "description": "picture not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+      
+    },
+
+    "/profile/password": {
+      "post": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Save Profile password",
+        "description": "",
+        "operationId": "save password",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "user_id of profile",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "save password",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/password"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+      
+    },
+
+    "/profile/picture": {
+      "post": {
+        "tags": [
+          "Profile"
+        ],
+        "summary": "Upload Profile picture",
+        "description": "",
+        "operationId": "Upload picture",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "user_id of profile",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "description": "file to upload",
+            "required": false,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
             }
           }
         }
       }
+      
     },
-    "/users/{userId}": {
-      "parameters": [
-        {
-          "name": "userId",
-          "in": "path",
-          "required": true,
-          "description": "ID of user that we want to find",
-          "type": "string"
-        }
-      ],
+
+    "/menu/search/{search}": {
       "get": {
         "tags": [
-          "Users"
+          "Menu"
         ],
-        "summary": "Get user with given ID",
-        "responses": {
-          "200": {
-            "description": "User is found",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete user with given ID",
-        "tags": [
-          "Users"
-        ],
-        "responses": {
-          "200": {
-            "description": "User is deleted",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "Update user with give ID",
-        "tags": [
-          "Users"
+        "summary": "Find Menu by Name",
+        "description": "Returns menu",
+        "operationId": "getMenuByName",
+        "produces": [
+          "application/xml",
+          "application/json"
         ],
         "parameters": [
           {
-            "name": "user",
-            "in": "body",
-            "description": "User with new values of properties",
+            "name": "search",
+            "in": "path",
+            "description": "Name of search to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid name"
+          },
+          "404": {
+            "description": "menu not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+      
+    },
+
+    "/menu/{id}": {
+      "get": {
+        "tags": [
+          "Menu"
+        ],
+        "summary": "Find Menu by ID",
+        "description": "Returns menu",
+        "operationId": "getMenuById",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of search to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid ID"
+          },
+          "404": {
+            "description": "menu not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Menu"
+        ],
+        "summary": "delete Menu by ID",
+        "description": "delete menu",
+        "operationId": "deleteMenu",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of search to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid ID"
+          },
+          "404": {
+            "description": "menu not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+      
+    },
+
+    "/menu/User": {
+      "get": {
+        "tags": [
+          "Menu"
+        ],
+        "summary": "Find Menu by User",
+        "description": "Returns menu",
+        "operationId": "getMenuByUser",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "User",
+            "in": "path",
+            "description": "User of search to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid User"
+          },
+          "404": {
+            "description": "menu not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+      
+    },
+
+    "/menu/": {
+      "get": {
+        "tags": [
+          "Menu"
+        ],
+        "summary": "Find Menu All",
+        "description": "Returns menu",
+        "operationId": "getMenu",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+         
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          
+          "404": {
+            "description": "menu not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Menu"
+        ],
+        "summary": "Save Menu",
+        "description": "Returns menu",
+        "operationId": "getMenu",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Menu object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Menu"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "User is updated",
+            "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          
+          "404": {
+            "description": "menu not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+      
+    },
+
+
+    "/knowledge/": {
+      "get": {
+        "tags": [
+          "knowledge"
+        ],
+        "summary": "Find knowledge All",
+        "description": "Returns knowledge",
+        "operationId": "getknowledge",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+         
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          
+          "404": {
+            "description": "knowledge not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+    },
+
+
+    "/knowledge/{id}": {
+      "get": {
+        "tags": [
+          "knowledge"
+        ],
+        "summary": "Find knowledge by ID",
+        "description": "Returns knowledge",
+        "operationId": "getKnowledgeById",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of search to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid ID"
+          },
+          "404": {
+            "description": "menu not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+      
+    },
+
+
+
+
+    "/group/": {
+
+      "get": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Finds group ",
+        "description": "group all",
+        "operationId": "findgroup",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        },
+        "security": [
+          
+        ]
+      },
+
+      "post": {
+        "tags": [
+          "group"
+        ],
+        "summary": "Add a new group",
+        "description": "add group",
+        "operationId": "createPost",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Pet object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Group"
             }
           }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            
+          }
+        ]
+      }
+    },
+
+
+    "/groupmap/": {
+
+      "get": {
+        "tags": [
+          "groupmapping"
+        ],
+        "summary": "Finds group map",
+        "description": "Finds group map",
+        "operationId": "find group mapping",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Groupmap"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        },
+        "security": [
+          {
+            
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "groupmapping"
+        ],
+        "summary": "Add a new group map",
+        "description": "",
+        "operationId": "createPost",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "save new group",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Groupmap"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+           
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "groupmapping"
+        ],
+        "summary": "delete group map",
+        "description": "",
+        "operationId": "deletePost",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "delete group",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Groupmap"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+           
+          }
+        ]
+      }
+    },
+
+    "/groupmap/type/{c_id}": {
+
+      "get": {
+        "tags": [
+          "groupmapping"
+        ],
+        "summary": "Finds group map ref",
+        "description": "Finds group map ref",
+        "operationId": "getMenuByMapRef",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "c_id",
+            "in": "path",
+            "description": "Id of search to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        },
+        "security": [
+          {
+            
+          }
+        ]
+      }
+    },
+
+
+    "/comment/": {
+
+      "get": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Finds comment ",
+        "description": "comment all",
+        "operationId": "comment all",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ApiResponse"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        },
+        "security": [
+          
+        ]
+      },
+
+      "post": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Add a new comment",
+        "description": "add comment",
+        "operationId": "createComment",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Add new comment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            
+          }
+        ]
+      },
+      
+
+      "delete": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "delete comment",
+        "description": "delete comment",
+        "operationId": "deletePost",
+        "consumes": [
+          "application/json",
+          "application/xml"
+        ],
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "delete comment",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/comment"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            
+          }
+        ]
+      }
+
+    },
+
+    "/comment/menu/{menu_id}": {
+      "get": {
+        "tags": [
+          "comment"
+        ],
+        "summary": "Find comment by MenuID",
+        "description": "Returns comment",
+        "operationId": "getCommentByMenuId",
+        "produces": [
+          "application/xml",
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "menu_id",
+            "in": "path",
+            "description": "menu_id of search to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/ApiResponse"
+            }
+          },
+          "400": {
+            "description": "Invalid menu_id"
+          },
+          "404": {
+            "description": "menu not found"
+          }
+        },
+        "security": [
+          {
+            "api_key": []
+          }
+        ]
+      }
+      
+    }
+
+
+  },
+  "securityDefinitions": {
+    "spaghetti_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "api_key",
+      "in": "header"
+    }
+  },
+  "definitions": {
+   
+    "password": {
+      "type": "object",
+      "required": [
+        "oldpassword",
+        "newpassword"
+      ],
+      "properties": {
+        "oldpassword": {
+          "type": "string"
+        },
+        "newpassword": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "password"
+      }
+    },
+
+    "Group": {
+      "type": "object",
+      "required": [
+        "c_id",
+        "c_name"
+      ],
+      "properties": {
+        "c_id": {
+          "type": "string"
+        },
+        "c_name": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "group"
+      }
+    },
+
+    "Groupmap": {
+      "type": "object",
+      "required": [
+        "name",
+        "photoUrls"
+      ],
+      "properties": {
+        "c_id": {
+          "type": "string"
+        },
+        "m_id": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "groupmap"
+      }
+    },
+  
+    "Menu": {
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "detail",
+        "picture",
+        "step",
+        "ingredients",
+        "group"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "picture": {
+          "type": "string"
+        },
+        "step": {
+          "type": "string"
+        },
+        "ingredients": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        }
+
+      },
+      "xml": {
+        "name": "menu"
+      }
+    },
+
+    "comment": {
+      "type": "object",
+      "required": [
+        "name",
+        "photoUrls"
+      ],
+      "properties": {
+        "cm_id": {
+          "type": "string"
+        },
+        "m_id": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "comment"
+      }
+    },
+
+    "knowledge": {
+      "type": "object",
+      "required": [
+        "name",
+        "photoUrls"
+      ],
+      "properties": {
+        "k_id": {
+          "type": "string"
+        },
+        "k_name": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "knowledge"
+      }
+    },
+
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
         }
       }
     }
   },
-  "definitions": {
-    "User": {
-      "required": [
-        "email",
-        "_id"
-      ],
-      "properties": {
-        "_id": {
-          "type": "string",
-          "uniqueItems": true
-        },
-        "email": {
-          "type": "string",
-          "uniqueItems": true
-        },
-        "lastName": {
-          "type": "string"
-        },
-        "firstName": {
-          "type": "string"
-        }
-      }
-    },
-    "Users": {
-      "type": "array",
-      "$ref": "#/definitions/User"
-    }
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
   }
 }

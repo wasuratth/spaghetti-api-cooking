@@ -1,22 +1,18 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const commentSchema = new mongoose.Schema({
-  user_id : { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  post_id : { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
-  text: { type: String, required: true, trim: true }, 
+const schema = new Schema({
+  menu : { type: mongoose.Schema.Types.ObjectId , ref : 'Menu' },
+  user : { type: mongoose.Schema.Types.ObjectId , ref : 'User' }, 
+  cm_detail: { type: String, trim: true },
+  cm_point: { type: Number , default : 0  } 
 }, {
-  toJSON: { virtuals: true },
+  toJSON: {virtuals: true},
   timestamps: true,
   collection: 'Comment'
 });
 
-commentSchema.virtual('user', {
-  ref: 'User', //ลิงก์ไปที่โมเดล Comment
-  localField: 'user_id', //_id ฟิลด์ของโมเดล Post (ไฟล์นี้)
-  foreignField: '_id' ,  //post ฟิลด์ของโมเดล Comment (fk)
-  justOne: true 
-}); 
- 
-const comment = mongoose.model('Comment', commentSchema);
 
-module.exports = comment;
+const comment = mongoose.model('Comment', schema);
+
+module.exports = comment; 

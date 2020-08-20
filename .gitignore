@@ -115,4 +115,9 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
+
 package-lock.json
+
+#sonar-scanner.bat -D"sonar.projectKey=pj-cooking-api" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.login=976a56a4415ec379a50184651bb61527edf0b981"
+.scannerwork 
+swagger_backup.json

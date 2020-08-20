@@ -22,13 +22,14 @@ const connectDB = require('./config/db')
 const authRoute = require('./routes/authRoute');
 const feedRoute = require('./routes/feedRoute');
 const postRoute = require('./routes/postRoute');
-const commentRoute = require('./routes/commentRoute');
 const profileRoute = require('./routes/profileRoute');
 const knowledgeRoute = require('./routes/knowledgeRoute');
 
 const groupRoute = require('./routes/groupRoute');
 const groupMapRoute = require('./routes/groupMapRoute');
-
+const commentRoute = require('./routes/commentRoute');
+const menuRoute = require('./routes/menuRoute');
+const pictureRoute = require('./routes/pictureRoute') ; 
 
 require('./models/commentModel');
 
@@ -56,16 +57,16 @@ app.use(passport.initialize());
 
 app.use('/api/auth', authRoute); 
 app.use('/api/profile', profileRoute); 
-app.use('/api/knowledge', knowledgeRoute); 
-
-//app.use('/api/feed', feedRoute);
-//app.use('/api/post', postRoute);
-//app.use('/api/comment', commentRoute );
-//app.use('/api/profile', profileRoute );
+app.use('/api/knowledge', knowledgeRoute);  
 app.use('/api/group', groupRoute);
 app.use('/api/groupmap', groupMapRoute);
+app.use('/api/comment', commentRoute);
+app.use('/api/menu', menuRoute);
+
+app.use('/api/picture', pictureRoute);
 
 app.use(errorHandler);
+
 
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
