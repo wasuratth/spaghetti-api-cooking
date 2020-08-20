@@ -7,6 +7,7 @@ const knowledgeController = require('../controllers/knowledgeController');
 
 router.get('/' , knowledgeController.index ) ;  
 router.get('/:id' , knowledgeController.getKnowledgeById ) ;  
+router.get('/search/:search' , knowledgeController.getKnowledgeByTitle ) ;  
 
  
  
