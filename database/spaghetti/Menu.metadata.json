@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"spaghetti.Menu"}],"uuid":"ab9d98c8d7e543c5a0b1f6b42ad6e5b7"}

@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"spaghetti.User"}],"uuid":"adf77d093f834ebabaf23522f771958e"}

@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"spaghetti.Comment"}],"uuid":"2f5cdeea7d394dc984f2e4cc9a59702c"}
