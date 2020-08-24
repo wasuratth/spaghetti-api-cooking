@@ -61,11 +61,19 @@ module.exports.getProfilePicture = async (req, res, next) => {
     var { id } = req.params  ;
 
     const user = await User.findById(id) ; 
-    const pic = await Picture.findById(user.picture) ; 
+    const pic = await Picture.findById(user.picture) ;
+    
     if(pic){
         res.status(200) ; 
         res.contentType('image/jpeg');
         res.send(pic.image) ; 
+    }else{
+        res.status(404).json({
+            errors: {
+                success: fasle,
+                message: "Can not find image",
+            
+        }}) ; 
     }
    
 
